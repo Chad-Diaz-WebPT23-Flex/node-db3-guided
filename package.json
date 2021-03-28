@@ -7,11 +7,12 @@
     "ketchup": "git fetch && git reset --hard origin/lecture"
   },
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "helmet": "^4.4.1",
-    "knex": "^0.21.16",
+    "knex": "^0.21.19",
     "knex-cleaner": "^1.3.1",
-    "sqlite3": "^5.0.1"
+    "sqlite3": "^5.0.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
