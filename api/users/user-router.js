@@ -1,7 +1,5 @@
 const router = require("express").Router();
 
-const db = require("../../data/db-config.js");
-
 const Users = require("./user-model.js");
 
 router.get("/", async (req, res) => {
@@ -46,11 +44,9 @@ router.put("/:id", async (req, res) => {
   try {
     const updatedUser = await Users.update(id, changes);
     if (updatedUser) {
-      res.status(202).json({ updatedUser });
+      res.status(202).json(updatedUser);
     } else {
-      res
-        .status(404)
-        .json({ message: `Could not find user with give id of ${id}` });
+      res.status(404).json({ message: `Could not find user with id of ${id}` });
     }
   } catch (err) {
     res.status(500).json({ message: "failed to update user" });
@@ -78,6 +74,21 @@ router.get("/:id/posts", async (req, res, next) => {
     res.status(200).json(posts);
   } catch (err) {
     res.status(500).json({ message: "error retrieving posts" });
+  }
+});
+
+router.post("/:id/posts", async (req, res) => {
+  const { id } = req.params;
+  const body = req.body;
+  try {
+    const newPost = await Users.addPostById(id, body);
+    if (newPost) {
+      res.status(201).json(newPost);
+    } else {
+      res.status(404).json({ message: `${id} is not a valid id` });
+    }
+  } catch (err) {
+    res.status(500).json({ message: "error adding posts" });
   }
 });
 

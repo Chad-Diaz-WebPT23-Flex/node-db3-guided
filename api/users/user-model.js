@@ -5,7 +5,7 @@ function find() {
 }
 
 function findById(id) {
-  return db("users").first("*").where({ id });
+  return db("users").where({ id }).first();
 }
 
 function findPost(id) {
@@ -15,16 +15,24 @@ function findPost(id) {
     .where({ user_id: id });
 }
 
-function add(user) {
-  return db("users").insert(user);
+async function addPostById(id, post) {
+  post.user_id = id;
+  const result = await db("posts").insert(post);
+  return result;
 }
 
-function update(id, changes) {
-  return db("users").updated(changes).where({ id });
+async function add(user) {
+  const count = await db("users").insert(user);
+  return (newUser = await findById(count[0]));
 }
 
-function remove(id) {
-  return db("users").del().where({ id });
+async function update(id, changes) {
+  await db("users").update(changes).where({ id });
+  return await findById(id);
+}
+
+async function remove(id) {
+  return await db("users").del().where({ id });
 }
 
 module.exports = {
@@ -34,4 +42,5 @@ module.exports = {
   add,
   update,
   remove,
+  addPostById,
 };
