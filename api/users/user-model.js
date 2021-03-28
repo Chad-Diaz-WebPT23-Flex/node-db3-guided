@@ -15,10 +15,26 @@ function findPost(id) {
     .where({ user_id: id });
 }
 
+function findAllPosts() {
+  return db("posts");
+}
+
 async function addPostById(id, post) {
   post.user_id = id;
-  const result = await db("posts").insert(post);
-  return result;
+  try {
+    const result = await db("posts").insert(post);
+    const newResult = await findPost(result);
+    return newResult;
+  } catch (err) {
+    throw err;
+  }
+}
+// REVIEW how would below work? and how would an update to postId work?
+
+async function removePostById(postId) {
+  post.user_id = id;
+  postId = post.id;
+  return await db("posts").where({ postId }).del();
 }
 
 async function add(user) {
@@ -27,8 +43,12 @@ async function add(user) {
 }
 
 async function update(id, changes) {
-  await db("users").update(changes).where({ id });
-  return await findById(id);
+  try {
+    await db("users").update(changes).where({ id });
+    return await findById(id);
+  } catch (err) {
+    throw err;
+  }
 }
 
 async function remove(id) {
@@ -43,4 +63,6 @@ module.exports = {
   update,
   remove,
   addPostById,
+  removePostById,
+  findAllPosts,
 };

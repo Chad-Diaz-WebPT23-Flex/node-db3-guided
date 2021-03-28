@@ -92,4 +92,30 @@ router.post("/:id/posts", async (req, res) => {
   }
 });
 
+// router.delete("/posts/:postId", async (req, res) => {
+
+//   const { postId } = req.params;
+//   try {
+//     const count = await Users.removePostById(id, postId);
+//     if (count) {
+//       res.status(202).json({ message: `${postId} has been deleted` });
+//     } else {
+//       res.status(404).json({ message: `${postId} is not a valid post id` });
+//     }
+//   } catch (err) {
+//     res.status(500).json({ message: "error deleting posts" });
+//   }
+// });
+
+// REVIEW Why doesn't the below code work?
+
+router.get("/findAllPosts", async (req, res) => {
+  try {
+    const posts = await Users.findAllPosts();
+    res.status(200).json(posts);
+  } catch (err) {
+    res.status(500).json({ message: "error finding posts" });
+  }
+});
+
 module.exports = router;
