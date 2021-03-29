@@ -29,17 +29,15 @@ async function addPostById(id, post) {
     throw err;
   }
 }
-// REVIEW how would below work? and how would an update to postId work?
 
-async function removePostById(postId) {
-  post.user_id = id;
-  postId = post.id;
-  return await db("posts").where({ postId }).del();
+async function removePostById(id) {
+  const count = await db("posts").del().where({ id });
+  return count;
 }
 
 async function add(user) {
-  const count = await db("users").insert(user);
-  return (newUser = await findById(count[0]));
+  const [id] = await db("users").insert(user);
+  return { id, ...user };
 }
 
 async function update(id, changes) {
